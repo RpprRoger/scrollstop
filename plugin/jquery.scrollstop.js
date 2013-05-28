@@ -2,7 +2,7 @@
  *  Project: scrollstop
  *  Description: Fires an event on the element which the cursor ends on
  *  Author: Robert Preus-MacLaren <rob@neontribe.co.uk>
- *  License: That MIT thingy
+ *  License: https://github.com/RpprRoger/scrollstop/blob/master/license.md
  */
 
 // the semi-colon before function invocation is a safety net against concatenated
@@ -37,14 +37,14 @@
     });
 
     $('body').on( 'mousewheel', function( evt ) {
-        clearTimeout( timer);
+        clearTimeout( timer );
         
         timer = setTimeout(function() {
             var $scroll = $(evt.target).parents(':scrollable'),
                 $target;
 
             // TODO: make this faster/better
-            $scroll.children().each(function() {
+            $scroll.children().each( function() {
                 var $this = $(this),
                     offset = $this.offset(),
                     boundsX = offset.top + $this.outerHeight(),
@@ -55,9 +55,12 @@
                 };
             });
 
-            $target && $target.trigger( 'scrollstop', [$target] );
+            // Attempt to wait for the browser to update its render
+            setTimeout(function() {
+                $target && $target.trigger( 'scrollstop', [$target] );
+            }, 0);
 
-        }, 500);
+        }, 400);
 
     });
 
